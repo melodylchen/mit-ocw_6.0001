@@ -59,15 +59,47 @@ Test Case 3
 Enter the starting salary: 10000
 It is not possible to pay the down payment in three years."""
 
+#Implement bisection search with guess and check
+
+#Request information from user
+annual_salary = float(input("Enter your annual salary:"))
+
+#State constants
+r = 0.04 #rate of retun is 4%
+total_cost = float(1000000) #Total cost of house is 1M
+months_to_save = 36
+epsilon = float(100) #epsilon for bisection search, being within 100 is 'good enough'
+portion_down_payment = 0.25 #25% neeed for downpayment
+semi_annual_raise = 0.07
 
 
-"""
-previous code
-while current_savings < total_cost*portion_down_payment:
-    if number_months != 0 and number_months % 6 ==0:
-        annual_salary = annual_salary*(float(1)+semi_annual_raise)
-    number_months = number_months + 1
-    current_savings = current_savings + current_savings*r/float(12) + portion_saved*annual_salary/float(12)
+#initialize a few variables
+num_steps = 0 #number of steps for bisection search
 
-print("Number of months:", number_months) 
-"""
+#implement bisection search
+low = 0
+high = 10000
+guess = (low+high)//2
+
+
+while True: 
+    current_savings = 0
+    annual_salary_iterate = annual_salary
+    for months in range(months_to_save+1):
+        if months != 0 and months % 6 ==0:
+            annual_salary_iterate = annual_salary_iterate*(float(1)+semi_annual_raise)
+        current_savings = current_savings + current_savings*r/12.0 + (guess/10000.0)*annual_salary_iterate/12.0
+    if high - low == 1:
+        print("Sorry it is impossible")
+        break
+    elif abs(current_savings - total_cost*portion_down_payment) <= epsilon:
+        print("Best savings rate:",guess/10000.0,"\nSteps in bisection search:",num_steps )
+        break
+    elif current_savings < total_cost*portion_down_payment:
+        low = guess
+    else:
+        high = guess
+    guess = (low+high)//2
+    num_steps += 1
+
+
