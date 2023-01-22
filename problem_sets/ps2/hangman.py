@@ -13,7 +13,7 @@ import random
 import string
 
 WORDLIST_FILENAME = "words.txt"
-
+#FYI, need to change terminal to working directory of ps2
 
 def load_words():
     """
@@ -48,7 +48,7 @@ def choose_word(wordlist):
 
 # Load the list of words into the variable wordlist
 # so that it can be accessed from anywhere in the program
-wordlist = load_words()
+#wordlist = load_words()
 
 
 def is_word_guessed(secret_word, letters_guessed):
@@ -60,10 +60,24 @@ def is_word_guessed(secret_word, letters_guessed):
     returns: boolean, True if all the letters of secret_word are in letters_guessed;
       False otherwise
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    word_letters = list(secret_word)
+    answer = True
+    for letter in letters_guessed:
+      if letter not in secret_word:
+        answer = False
+    return answer
+"""
+#Testing for is_word_guessed
+secret_word = 'apple'
+letters_guessed = ['e', 'i', 'k', 'p', 'r', 's']
+print(is_word_guessed(secret_word, letters_guessed))
+#Output should be False
 
-
+secret_word = 'apple'
+letters_guessed = ['a', 'p']
+print(is_word_guessed(secret_word, letters_guessed))
+#Output should be True
+"""
 
 def get_guessed_word(secret_word, letters_guessed):
     '''
@@ -73,9 +87,21 @@ def get_guessed_word(secret_word, letters_guessed):
       which letters in secret_word have been guessed so far.
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
-
-
+    word_letters = list(secret_word)
+    answer = list('_'*len(secret_word))
+    for letter in letters_guessed:
+      if letter in word_letters:
+        for i in range(len(word_letters)):
+          if word_letters[i] == letter:
+            answer[i]=word_letters[i]
+    return " ".join(answer)
+"""
+test for above function   
+secret_word = 'apple'
+letters_guessed = ['e', 'i', 'k', 'p', 'r', 's']
+print(get_guessed_word(secret_word, letters_guessed))
+#Answer should be '_ p p _ e'
+"""
 
 def get_available_letters(letters_guessed):
     '''
@@ -84,7 +110,20 @@ def get_available_letters(letters_guessed):
       yet been guessed.
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    available_letters = list(string.ascii_lowercase)
+    for letter in letters_guessed:
+      if letter in available_letters:
+        for i in range(len(available_letters)):
+          if available_letters[i] == letter:
+            available_letters[i]= ""
+    return "".join(available_letters)
+
+
+#letters_guessed = ['e', 'i', 'k', 'p', 'r', 's']  
+#print(get_available_letters(letters_guessed))
+
+# should be: abcdfghjlmnoqtuvwxyz
+
     
     
 
@@ -114,6 +153,21 @@ def hangman(secret_word):
     Follows the other limitations detailed in the problem write-up.
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
+    #Add constants
+    num_guesses = 6
+    num_warnings = 3
+    secret_word_len = len(secret_word)
+    letters_guessed = []
+    while num_guesses >= 0:
+      userguess = input("Please guess a letter:").lower
+      if userguess not in list(string.ascii_lowercase):
+        if num_warnings < 1:
+          num_guesses -= 1
+        else:
+          num_warnings -= 1
+      letters_guessed.append(user_guess)
+
+      num_guesses -= 1
     pass
 
 
